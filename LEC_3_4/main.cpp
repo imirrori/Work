@@ -1,25 +1,19 @@
 ﻿// проверить на полиндром.
 
 #include <stdio.h>
+#include <string.h>
 
 
 int main()
 {
-    long long int N;
-    long long int testN = 0;
+    char Str[255];
+    scanf("%s", Str);
 
-    printf("Please enter N: ");
-    scanf("%lld", &N);
-
-    long long int temp = N;
-    while(temp > 0)
+    bool polindrome = true;
+    for(unsigned int i = 0; i < strlen(Str) && polindrome; ++i)
     {
-        testN *= 10;
-        testN += temp % 10;
-        temp /= 10;
+        polindrome = Str[i] == Str[strlen(Str) - 1 - i];
     }
 
-    printf("%s", N == testN ? "true" : "false");
-
-    return 0;
+    printf("%s\n", polindrome ? "polindrome" : "not polindrome");
 }
