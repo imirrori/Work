@@ -1,10 +1,12 @@
 ﻿#ifndef MENU_H
 #define MENU_H
 
+#include "State.h"
+
 struct MenuPoint
 {
     char name[255];
-    void (*fun)();
+    State (*fun)();
 };
 
 struct Menu
@@ -15,6 +17,6 @@ struct Menu
 
 void init_menu(Menu* menu);
 void print_menu(Menu menu);
-bool move_menu(Menu* menu, int key);
+State move_menu(Menu* menu, int key);
 
 #endif // MENU_H

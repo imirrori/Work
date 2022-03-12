@@ -3,6 +3,7 @@
 
 #include "Point.h"
 #include "Map.h"
+#include "State.h"
 
 struct Snake
 {
@@ -13,6 +14,6 @@ struct Snake
 
 void init_snake(Snake* snake);
 void print_snake(Snake snake);
-bool move_snake(Snake* snake, int key, Map map);
+State move_snake(Snake* snake, int key, Map map);
 
 #endif // SNAKE_H

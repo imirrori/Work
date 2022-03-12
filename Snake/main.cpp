@@ -1,8 +1,13 @@
 ﻿#include "Map.h"
-#include "Snake.h"
 #include "Menu.h"
+#include "Snake.h"
+#include "State.h"
+
+#include <stdlib.h>
 
 #include <ncurses.h> //подключаем библиотеку ncurses
+
+State state = MENU;
 
 int main()
 {
@@ -19,14 +24,32 @@ int main()
     init_snake(&snake);
     init_menu(&menu);
 
+    State lastState = state;
     do
     {
-        //print_map(map);
-        //print_snake(snake);
-        print_menu(menu);
-        move_menu(&menu, getch());
+        switch(state)
+        {
+        case MENU:
+            print_menu(menu);
+            state = move_menu(&menu, getch());
+            break;
+        case GAME:
+            print_map(map);
+            print_snake(snake);
+            state = move_snake(&snake, getch(), map);
+            break;
+        case EXIT:
+            exit(0);
+        }
+
+        if (lastState != state)
+        {
+            clear();
+            lastState = state;
+        }
+
+
         refresh();
-        //!move_snake(&snake, getch(), map)
     }while(true);
 
     endwin();

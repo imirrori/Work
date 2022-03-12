@@ -1,24 +1,32 @@
 ﻿#include "Menu.h"
 
-#include <stdlib.h>
+#include "Keys.h"
+#include "State.h"
+
 #include <string.h>
 #include <ncurses.h>
 
-void exit_from_game()
+State exit_from_game()
 {
-    exit(0);
+    return EXIT;
 }
 
-void none()
+State start_game()
 {
-
+    return GAME;
 }
 
-void init_menu(Menu* menu)
+State none()
+{
+    return state;
+}
+
+void init_menu(Menu* menu )
 {
     strcpy(menu->menu_point[0].name, "Start game");
+    menu->menu_point[0].fun = &start_game;
+
     strcpy(menu->menu_point[1].name, "Exit");
-    menu->menu_point[0].fun = &none;
     menu->menu_point[1].fun = &exit_from_game;
     menu->current_point = 0;
 }
@@ -31,17 +39,17 @@ void print_menu(Menu menu)
     mvaddch(5 + menu.current_point, 4, '*');
 }
 
-bool move_menu(Menu* menu, int key)
+State move_menu(Menu* menu, int key)
 {
     mvaddch(5 + menu->current_point, 4, ' ');
     switch(key)
     {
-    case KEY_UP:
-    case KEY_DOWN:
+    case MY_KEY_UP:
+    case MY_KEY_DOWN:
         menu->current_point = menu->current_point == 0 ? 1 : 0;
         break;
-    case KEY_RIGHT:
-        menu->menu_point[menu->current_point].fun();
-        break;
+    case MY_KEY_ENTER:
+        return menu->menu_point[menu->current_point].fun();
     }
+    return none();
 }

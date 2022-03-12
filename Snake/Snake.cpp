@@ -1,5 +1,8 @@
 ﻿#include "Snake.h"
 
+#include "Keys.h"
+#include "State.h"
+
 #include <ncurses.h>
 
 void init_snake(Snake* snake)
@@ -15,27 +18,28 @@ void print_snake(Snake snake)
     attroff(COLOR_PAIR(snake.pol_color));
 }
 
-
-bool move_snake(Snake* snake, int key, Map map)
+State move_snake(Snake* snake, int key, Map map)
 {
     mvaddch(snake->head.y, snake->head.x, ' ');
     switch(key)
     {
-    case KEY_LEFT:
+    case MY_KEY_LEFT:
         --snake->head.x;
         break;
-    case KEY_RIGHT:
+    case MY_KEY_RIGHT:
         ++snake->head.x;
         break;
-    case KEY_UP:
+    case MY_KEY_UP:
         --snake->head.y;
         break;
-    case KEY_DOWN:
+    case MY_KEY_DOWN:
         ++snake->head.y;
         break;
+    case MY_KEY_ESC:
+        return MENU;
     }
     if (snake->head.x == map.exit.x &&
         snake->head.y == map.exit.y)
-        return true;
-    return false;
+        return EXIT;
+    return state;
 }
